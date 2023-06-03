@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mysql.connector
 from datetime import timedelta
-
+import datetime as t
 # Establish a connection to the database
 conn = mysql.connector.connect(
     host="192.168.1.4",
@@ -58,12 +58,13 @@ plt.xticks(rotation=45, fontsize=6)
 
 # Show the legend
 plt.legend()
+datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig('./MasterBedroomGraph.png')
+plt.savefig(f'./MasterBedroom_{datetime}.png')
 
 # Display the graph
-plt.show()
+# plt.show()
 
 # Close the cursor and the connection
 cursor.close()
