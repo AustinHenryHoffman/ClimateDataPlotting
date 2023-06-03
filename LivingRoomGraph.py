@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 import mysql.connector
 from datetime import timedelta
 import datetime as t
-
-
 # Establish a connection to the database
 conn = mysql.connector.connect(
     host="192.168.1.4",
@@ -38,6 +36,18 @@ df['datetime'] = df['date'] + df['time']
 # Set the datetime column as the index
 df = df.set_index("datetime")
 
+
+# Set the figure size to match the screen resolution
+figure_width = 320  # Width of the screen in pixels
+figure_height = 240  # Height of the screen in pixels
+dpi = 80  # Dots per inch (adjust this value as needed)
+
+plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
+
+# Set the figure size and adjust the margins
+#plt.figure(figsize=(10, 6))
+plt.subplots_adjust(bottom=0.15)
+
 # Plot the temperature and humidity
 plt.plot(df.index, df["temperature"], label="Temperature")
 plt.plot(df.index, df["humidity"], label="Humidity")
@@ -53,20 +63,16 @@ plt.title("Temperature and Humidity in Living Room")
 
 # Rotate x-axis labels for better visibility
 plt.xticks(rotation=45, fontsize=6)
-# plt.gca().xaxis.set_major_formatter(plt.FixedFormatter(df.index.strftime("%Y-%m-%d %H:%M")))
-# Specify the frequency of x-axis tick labels (every 2 hours in this example)
-# plt.xticks(df.index[::20], rotation=45, fontsize = 6)
 
-datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 # Show the legend
 plt.legend()
+datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig(f'./LivingRoom_{datetime}.png')
+plt.savefig(f'./MasterBedroom_{datetime}.png',dpi=dpi)
 
 # Display the graph
 # plt.show()
-
 
 # Close the cursor and the connection
 cursor.close()

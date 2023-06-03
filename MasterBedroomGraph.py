@@ -36,8 +36,16 @@ df['datetime'] = df['date'] + df['time']
 # Set the datetime column as the index
 df = df.set_index("datetime")
 
+
+# Set the figure size to match the screen resolution
+figure_width = 320  # Width of the screen in pixels
+figure_height = 240  # Height of the screen in pixels
+dpi = 80  # Dots per inch (adjust this value as needed)
+
+plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
+
 # Set the figure size and adjust the margins
-plt.figure(figsize=(10, 6))
+#plt.figure(figsize=(10, 6))
 plt.subplots_adjust(bottom=0.15)
 
 # Plot the temperature and humidity
@@ -61,7 +69,7 @@ plt.legend()
 datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig(f'./MasterBedroom_{datetime}.png')
+plt.savefig(f'./MasterBedroom_{datetime}.png',dpi=dpi)
 
 # Display the graph
 # plt.show()
