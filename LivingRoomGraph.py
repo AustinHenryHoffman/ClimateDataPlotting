@@ -69,7 +69,7 @@ plt.legend()
 datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig(f'./MasterBedroom_{datetime}.png',dpi=dpi)
+plt.savefig(f'./LivingRoom_{datetime}.png',dpi=dpi)
 
 # Display the graph
 # plt.show()
