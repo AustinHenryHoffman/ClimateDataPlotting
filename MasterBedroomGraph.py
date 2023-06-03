@@ -63,7 +63,7 @@ plt.legend()
 plt.savefig('./MasterBedroomGraph.png')
 
 # Display the graph
-plt.show()
+# plt.show()
 
 # Close the cursor and the connection
 cursor.close()

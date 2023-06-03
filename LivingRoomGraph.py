@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mysql.connector
 from datetime import timedelta
+import datetime as t
+
 
 # Establish a connection to the database
 conn = mysql.connector.connect(
@@ -47,7 +49,7 @@ plt.xlabel("Date and Time")
 plt.ylabel("TempF/Humidity%")
 
 # Set the title
-plt.title("Temperature and Humidity in Master Bedroom")
+plt.title("Temperature and Humidity in Living Room")
 
 # Rotate x-axis labels for better visibility
 plt.xticks(rotation=45, fontsize=6)
@@ -55,15 +57,16 @@ plt.xticks(rotation=45, fontsize=6)
 # Specify the frequency of x-axis tick labels (every 2 hours in this example)
 # plt.xticks(df.index[::20], rotation=45, fontsize = 6)
 
-
+datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 # Show the legend
 plt.legend()
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig('./image.png')
+plt.savefig(f'./LivingRoom_{datetime}.png')
 
 # Display the graph
-plt.show()
+# plt.show()
+
 
 # Close the cursor and the connection
 cursor.close()
