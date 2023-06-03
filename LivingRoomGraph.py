@@ -47,7 +47,7 @@ plt.xlabel("Date and Time")
 plt.ylabel("TempF/Humidity%")
 
 # Set the title
-plt.title("Temperature and Humidity in Master Bedroom")
+plt.title("Temperature and Humidity in Living Room")
 
 # Rotate x-axis labels for better visibility
 plt.xticks(rotation=45, fontsize=6)
