@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import mysql.connector
 from datetime import timedelta
 import datetime as t
+from PIL import Image
+from pathlib import Path
 # Establish a connection to the database
 conn = mysql.connector.connect(
     host="192.168.1.4",
@@ -69,7 +71,7 @@ plt.legend()
 datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig(f'./MasterBedroom_{datetime}.png',dpi=dpi)
+plt.savefig(f'./MasterBedroom_{datetime}_128x128.png',dpi=dpi)
 
 # Display the graph
 # plt.show()
@@ -77,3 +79,21 @@ plt.savefig(f'./MasterBedroom_{datetime}.png',dpi=dpi)
 # Close the cursor and the connection
 cursor.close()
 conn.close()
+
+# Open the saved image using PIL
+
+image = Image.open(f'./MasterBedroom_{datetime}_128x128.png')
+
+# Resize the image to 128x128
+resized_image = image.resize((128, 128))
+
+# Convert the resized image to raw format
+raw_data = resized_image.tobytes()
+
+# Save the raw data to a file
+raw_file_path = f'./MasterBedroom_{datetime}_128x128.raw'
+with open(raw_file_path, 'wb') as file:
+    file.write(raw_data)
+
+
+
