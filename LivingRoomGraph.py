@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import mysql.connector
 from datetime import timedelta
 import datetime as t
+from PIL import Image
+from pathlib import Path
+
 # Establish a connection to the database
 conn = mysql.connector.connect(
     host="192.168.1.4",
@@ -42,10 +45,10 @@ figure_width = 320  # Width of the screen in pixels
 figure_height = 240  # Height of the screen in pixels
 dpi = 80  # Dots per inch (adjust this value as needed)
 
-plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
+#plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
 
 # Set the figure size and adjust the margins
-#plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 6))
 plt.subplots_adjust(bottom=0.15)
 
 # Plot the temperature and humidity
@@ -66,10 +69,10 @@ plt.xticks(rotation=45, fontsize=6)
 
 # Show the legend
 plt.legend()
-datetime = t.datetime.now().strftime('%H%M%S%d%m%y')
+datetime = t.datetime.now().strftime('d%m%y%H%M%S')
 
 # Save the figure as an image instead of displaying it on screen
-plt.savefig(f'./LivingRoom_{datetime}.png',dpi=dpi)
+plt.savefig(f'./images/LivingRoom_{datetime}.png',dpi=dpi)
 
 # Display the graph
 # plt.show()
@@ -77,3 +80,20 @@ plt.savefig(f'./LivingRoom_{datetime}.png',dpi=dpi)
 # Close the cursor and the connection
 cursor.close()
 conn.close()
+# Open the saved image using PIL
+
+image = Image.open(f'./images/LivingRoom_{datetime}.png')
+
+# Resize the image to 128x128
+resized_image = image.resize((128, 128))
+resized_image.save(f'./images/LivingRoom_{datetime}_128x128.png')
+
+
+# Convert the resized image to raw format
+#raw_data = resized_image.tobytes()
+
+# Save the raw data to a file
+# draw_file_path = f'./LivingRoom_{datetime}_128x128.raw'
+# with open(raw_file_path, 'wb') as file:
+    # file.write(raw_data)
+
