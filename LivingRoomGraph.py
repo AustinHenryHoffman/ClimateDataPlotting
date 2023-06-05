@@ -16,9 +16,10 @@ conn = mysql.connector.connect(
 
 # Create a cursor object
 cursor = conn.cursor()
-
+today=t.datetime.now().strftime('%Y-%m-%d')
+query = f"SELECT date, time, temperature, humidity FROM house_climate_data WHERE location = 'Living Room' and date='{today}'"
 # Execute the select query
-query = "SELECT date, time, temperature, humidity FROM house_climate_data WHERE location = 'Living Room'"
+#query = "SELECT date, time, temperature, humidity FROM house_climate_data WHERE location = 'Living Room'"
 cursor.execute(query)
 
 # Fetch the data
