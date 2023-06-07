@@ -12,10 +12,9 @@ import gc
 import random
 import os
 
-#tft = tft_config.config(3, buffer_size=30*2)
-gc.enable()
-gc.collect()
-tft = tft_config.config(3, buffer_size=30 * 2)
+# gc.enable()
+# gc.collect()
+tft = tft_config.config(1)
 
 # enable display and clear screen
 tft.init()
@@ -36,8 +35,8 @@ class NetworkManager:
 
 
 # Start networking
-network_manager = NetworkManager()
-network_manager.connect_to_network()
+# network_manager = NetworkManager()
+# network_manager.connect_to_network()
 utime.sleep(3)
 
 
@@ -54,8 +53,8 @@ def main():
     # Calculate the coordinates for centering the image
     x = (screen_width - image_width) // 2
     y = (screen_height - image_height) // 2
-
-    tft.png(f'LivingRoom_155452030623.png', 0, 140)
+    tft.text(bigFont, "Hello", 0, 0)
+    #tft.png("MasterBedroom_155444030623.png", x, y)
     # Replace 'http://<pi_ip_address>:5000/images' with the URL of your Flask app
     """
     url = 'http://192.168.1.4:5000/image'
