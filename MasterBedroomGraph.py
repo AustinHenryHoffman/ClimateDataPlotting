@@ -45,11 +45,16 @@ figure_width = 320  # Width of the screen in pixels
 figure_height = 240  # Height of the screen in pixels
 dpi = 80  # Dots per inch (adjust this value as needed)
 
-#plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
+plt.figure(figsize=(figure_width / dpi, figure_height / dpi), dpi=dpi)
 
 # Set the figure size and adjust the margins
-plt.figure(figsize=(10, 6))
-plt.subplots_adjust(bottom=0.15)
+#plt.figure(figsize=(10, 6))
+
+#plt with no figure size
+#plt.figure()
+
+
+plt.subplots_adjust(bottom=0.2)
 
 # Plot the temperature and humidity
 plt.plot(df.index, df["temperature"], label="Temperature")
@@ -86,17 +91,20 @@ conn.close()
 image = Image.open(f'./images/MasterBedroom_{datetime}.png')
 
 # Resize the image to 128x128
-resized_image = image.resize((128, 128))
-resized_image.save(f'./images/MasterBedroom_{datetime}_128x128.png')
+#width x height
+resized_image = image.resize((320, 240),Image.ANTIALIAS)
+resized_image.save(f'./images/MasterBedroom_{datetime}_240x320.png')
 
 
-# Convert the resized image to raw format
+#Convert the resized image to raw format
 #raw_data = resized_image.tobytes()
 
-# Save the raw data to a file
-# draw_file_path = f'./images/MasterBedroom_{datetime}_128x128.raw'
-# with open(raw_file_path, 'wb') as file:
-    # file.write(raw_data)
+#Save the raw data to a file
+
+#raw_file_path = f'./images/MasterBedroom_{datetime}_128x128.raw'
+
+#with open(raw_file_path, 'wb') as file:
+    #file.write(raw_data)
 
 
 
