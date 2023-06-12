@@ -14,7 +14,7 @@ import os
 
 # gc.enable()
 # gc.collect()
-tft = tft_config.config(1)
+tft = tft_config.config(3)
 
 # enable display and clear screen
 tft.init()
@@ -26,7 +26,7 @@ class NetworkManager:
         self.wlan.active(True)
 
     def connect_to_network(self):
-        with open("./etc/network_config.json", "r") as file:
+        with open("network_config.json", "r") as file:
             config_data = json.load(file)
         network_info = config_data["network"]
         ssid = network_info["ssid"]
@@ -34,13 +34,48 @@ class NetworkManager:
         self.wlan.connect(ssid, password)
 
 
+def get_images():
+    # Replace the URL with the actual URL of your Flask app
+    url = 'http://192.168.1.4:5000/image'
+
+    # Send a GET request to the /image endpoint
+    response = urequests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Get the response content (image data)
+        image_data = response.content
+
+        # Check if enough data was received
+        if len(image_data) > 0:
+            # Save each image from the collected data
+            for i in range(3):
+                # Replace 'image{}.png' with the desired filename pattern and extension
+                filename = 'image{}.png'.format(i)
+                with open(filename, 'wb') as file:
+                    file.write(image_data)
+
+                print('Image {} saved successfully.'.format(i))
+        else:
+            print('No image data received.')
+    else:
+        print('Request failed with status code {}.'.format(response.status_code))
+
+
 # Start networking
-# network_manager = NetworkManager()
-# network_manager.connect_to_network()
+network_manager = NetworkManager()
+network_manager.connect_to_network()
 utime.sleep(3)
 
 
 def main():
+    """
+    x = 0
+    if x == 0:
+        get_images()
+        x += 1
+    """
+    tft.fill(st7789.BLUE)
     # display png in random locations
     # Set the screen dimensions
     screen_width = 320  # Width of the screen in pixels
@@ -53,8 +88,8 @@ def main():
     # Calculate the coordinates for centering the image
     x = (screen_width - image_width) // 2
     y = (screen_height - image_height) // 2
-    tft.text(bigFont, "Hello", 0, 0)
-    #tft.png("MasterBedroom_155444030623.png", x, y)
+    #tft.text(bigFont, "Hello", 0, 0)
+    tft.png("Living Room_090623102749_240x320.png", x, y)
     # Replace 'http://<pi_ip_address>:5000/images' with the URL of your Flask app
     """
     url = 'http://192.168.1.4:5000/image'
