@@ -19,7 +19,7 @@ def create_graphs(dates="today", rooms="All"):
         rooms = ["Master Bedroom"]
     elif rooms == "livingroom":
         rooms = ["Living Room"]
-    elif rooms == "secondbedrooom":
+    elif rooms == "secondbedroom":
         rooms = ["Second Bedroom"]
     else:
         print("Invalid rooms argument pass.")
