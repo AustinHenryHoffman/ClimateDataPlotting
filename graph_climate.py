@@ -21,7 +21,7 @@ def create_graphs(dates="today", rooms="All"):
         today = t.datetime.now().strftime('%Y-%m-%d')
 
     for room in location:
-        print(room)
+        print(room.replace(" ", "_"))
         # Establish a connection to the database
         conn = mysql.connector.connect(
             host="192.168.1.4",
@@ -78,16 +78,16 @@ def create_graphs(dates="today", rooms="All"):
         datetime = t.datetime.now().strftime('%d%m%y%H%M%S')
 
         # Save the figure as an image instead of displaying it on screen
-        plt.savefig(f'./images/{room}_{datetime}.png', dpi=dpi)
+        plt.savefig(f'./images/{room.replace(" ", "_")}_{datetime}.png', dpi=dpi)
         plt.close('all')
         # Close the cursor and the connection
         cursor.close()
         conn.close()
 
         # Open the saved image using PIL
-        with Image.open(f'./images/{room}_{datetime}.png', 'r') as image:
+        with Image.open(f'./images/{room.replace(" ", "_")}_{datetime}.png', 'r') as image:
             # Resize the image
             # width x height
             resized_image = image.resize((320, 240), Image.ANTIALIAS)
-            resized_image.save(f'./images/{room}_{datetime}_240x320.png')
-            os.remove(f'./images/{room}_{datetime}.png')
+            resized_image.save(f'./images/{room.replace(" ","_")}_{datetime}_240x320.png')
+            os.remove(f'./images/{room.replace(" ","_")}_{datetime}.png')
