@@ -5,6 +5,7 @@ import mysql.connector
 import datetime as t
 from PIL import Image
 import os
+import sys
 matplotlib.use('Agg')
 
 
@@ -12,15 +13,24 @@ def create_graphs(dates="today", rooms="All"):
     plt.ioff()
     if rooms == "All":
         rooms = ["Master Bedroom", "Second Bedroom", "Living Room"]
-    location = [i for i in rooms]
-    print(location)
+        # location = [i for i in rooms]
+        print(rooms)
+    elif rooms == "Master Bedroom":
+        rooms = ["Master Bedroom"]
+    elif rooms == "Living Room":
+        rooms = ["Living Room"]
+    elif rooms == "Second Bedroom":
+        rooms = ["Second Bedroom"]
+    else:
+        print("Invalid rooms argument pass.")
+        sys.exit(0)
 
     if dates == "today":
         today = t.datetime.now().strftime('%Y-%m-%d')
     else:
         today = t.datetime.now().strftime('%Y-%m-%d')
 
-    for room in location:
+    for room in rooms:
         print(room.replace(" ", "_"))
         # Establish a connection to the database
         conn = mysql.connector.connect(
@@ -94,4 +104,8 @@ def create_graphs(dates="today", rooms="All"):
 
 
 if __name__ == "__main__":
-    create_graphs()
+    if len(sys.argv) > 1:
+        rooms_arg = sys.argv[1]
+        create_graphs(rooms=rooms_arg)
+    else:
+        create_graphs()
