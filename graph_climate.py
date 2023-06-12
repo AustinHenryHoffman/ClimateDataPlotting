@@ -15,11 +15,11 @@ def create_graphs(dates="today", rooms="All"):
         rooms = ["Master Bedroom", "Second Bedroom", "Living Room"]
         # location = [i for i in rooms]
         print(rooms)
-    elif rooms == "Master Bedroom":
+    elif rooms == "masterbedroom":
         rooms = ["Master Bedroom"]
-    elif rooms == "Living Room":
+    elif rooms == "livingroom":
         rooms = ["Living Room"]
-    elif rooms == "Second Bedroom":
+    elif rooms == "secondbedrooom":
         rooms = ["Second Bedroom"]
     else:
         print("Invalid rooms argument pass.")
