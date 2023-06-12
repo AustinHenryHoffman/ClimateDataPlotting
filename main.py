@@ -1,19 +1,11 @@
 import utime
 import st7789
 import tft_config
-import vga2_bold_16x32 as bigFont
-import vga1_8x16 as smallFont
 from network import WLAN, STA_IF   # handles connecting to WiFi
 import urequests    # handles making and servicing network requests
-from machine import Pin, I2C
 import machine
 import json
-import gc
-import random
-import os
 
-# gc.enable()
-# gc.collect()
 tft = tft_config.config(3)
 
 # enable display and clear screen
@@ -34,32 +26,93 @@ class NetworkManager:
         self.wlan.connect(ssid, password)
 
 
-def get_images():
-    # Replace the URL with the actual URL of your Flask app
-    url = 'http://192.168.1.4:5000/image'
+def set_pico_time_from_server():
+    response = urequests.get("http://192.168.1.4:5000/datetime")
+    data = response.json()
 
-    # Send a GET request to the /image endpoint
+    year, month, day = map(int, data["date"].split("-"))
+    hour, minute, second = map(int, data["time"].split(":"))
+
+    rtc = machine.RTC()
+    rtc.datetime((year, month, day, 0, hour, minute, second, 0))
+
+
+def print_pico_time():
+    rtc = machine.RTC()
+    year, month, day, weekday, hours, minutes, seconds, subseconds = rtc.datetime()
+    current_date = "{:04d}-{:02d}-{:02d}".format(year, month, day)
+    current_time = "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
+    date_time = [current_date, current_time]
+    return date_time
+
+
+def get_current_date():
+    r = urequests.get("http://192.168.1.4:5000/datetime")  # Server that returns the current GMT+0 time.
+    date = r.json()["date"]
+    return date
+
+
+def get_master_bedroom():
+    # Replace the URL with the actual URL of your Flask app
+    url = 'http://192.168.1.4:5000/masterbedroom'
+
+    # Send a GET request to the /masterbedroom endpoint
     response = urequests.get(url)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Get the response content (image data)
-        image_data = response.content
+        # Replace 'image.png' with the desired filename and extension
+        filename = 'MasterBedroom.png'
 
-        # Check if enough data was received
-        if len(image_data) > 0:
-            # Save each image from the collected data
-            for i in range(3):
-                # Replace 'image{}.png' with the desired filename pattern and extension
-                filename = 'image{}.png'.format(i)
-                with open(filename, 'wb') as file:
-                    file.write(image_data)
+        with open(filename, 'wb') as file:
+            # Save the image content to the file
+            file.write(response.content)
 
-                print('Image {} saved successfully.'.format(i))
-        else:
-            print('No image data received.')
+        print(f'Saved {filename} successfully.')
     else:
-        print('Request failed with status code {}.'.format(response.status_code))
+        print(f'Request failed with status code {response.status_code}.')
+
+
+def get_living_room():
+    # Replace the URL with the actual URL of your Flask app
+    url = 'http://192.168.1.4:5000/livingroom'
+
+    # Send a GET request to the /masterbedroom endpoint
+    response = urequests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Replace 'image.png' with the desired filename and extension
+        filename = 'LivingRoom.png'
+
+        with open(filename, 'wb') as file:
+            # Save the image content to the file
+            file.write(response.content)
+
+        print(f'Saved {filename} successfully.')
+    else:
+        print(f'Request failed with status code {response.status_code}.')
+
+
+def get_second_bedroom():
+    # Replace the URL with the actual URL of your Flask app
+    url = 'http://192.168.1.4:5000/secondbedroom'
+
+    # Send a GET request to the /masterbedroom endpoint
+    response = urequests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Replace 'image.png' with the desired filename and extension
+        filename = 'SecondBedRoom.png'
+
+        with open(filename, 'wb') as file:
+            # Save the image content to the file
+            file.write(response.content)
+
+        print(f'Saved {filename} successfully.')
+    else:
+        print(f'Request failed with status code {response.status_code}.')
 
 
 # Start networking
@@ -69,13 +122,16 @@ utime.sleep(3)
 
 
 def main():
-    """
-    x = 0
-    if x == 0:
-        get_images()
-        x += 1
-    """
-    tft.fill(st7789.BLUE)
+    try:
+        current_date = get_current_date()
+        set_pico_time_from_server()
+        get_master_bedroom()
+        get_living_room()
+        get_second_bedroom()
+    except Exception as e:
+        print(e)
+
+    tft.fill(st7789.BLACK)
     # display png in random locations
     # Set the screen dimensions
     screen_width = 320  # Width of the screen in pixels
@@ -88,35 +144,37 @@ def main():
     # Calculate the coordinates for centering the image
     x = (screen_width - image_width) // 2
     y = (screen_height - image_height) // 2
-    #tft.text(bigFont, "Hello", 0, 0)
-    tft.png("Living Room_090623102749_240x320.png", x, y)
-    # Replace 'http://<pi_ip_address>:5000/images' with the URL of your Flask app
-    """
-    url = 'http://192.168.1.4:5000/image'
-    # Send a GET request to the Flask app
-    response = urequests.get(url)
 
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Get the list of image URLs from the response
-        image_urls = response.json()
-        print(response.json())
-        # Iterate over the image URLs
-        for i, image_url in enumerate(image_urls):
-            # Send a GET request for each image URL
-            image_response = urequests.get(image_url)
+    while True:
+        tft.png("MasterBedroom.png", x, y)
+        utime.sleep(10)
+        tft.fill(st7789.BLACK)
+        tft.png("LivingRoom.png", x, y)
+        utime.sleep(10)
+        tft.fill(st7789.BLACK)
+        tft.png("SecondBedRoom.png", x, y)
+        utime.sleep(10)
+        tft.fill(st7789.BLACK)
+        date_time = print_pico_time()
+        print(date_time[0])
+        minute = str(date_time[1]).split(":")[1]
+        second = str(date_time[1]).split(":")[2]
+        # Refresh charts daily
+        if date_time[0] != current_date:
+            current_date = get_current_date()
+            get_master_bedroom()
+            get_living_room()
+            get_second_bedroom()
+        print(minute)
+        # Refresh charts hourly
+        if minute == "59" and int(second) > 58:
+            try:
+                get_master_bedroom()
+                get_living_room()
+                get_second_bedroom()
+            except Exception as e:
+                print(e)
+                pass
 
-            # Check if the request for the image was successful
-            if image_response.status_code == 200:
-                # Save the received image to a file
-                with open(f'image_{i}.png', 'r') as f:
-                    f.write(image_response.content)
-                    tft.png(i, 160, 120)
-                print(f'Image {i} saved successfully.')
-            else:
-                print(f'Error occurred while retrieving image {i}:', image_response.status_code)
-    else:
-        print('Error occurred:', response.status_code)
-    """
 
 main()
