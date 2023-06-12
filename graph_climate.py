@@ -30,7 +30,7 @@ def create_graphs(dates="today", rooms="All"):
             database="home_thermostat"
         )
         cursor = conn.cursor()
-        query = f"SELECT date, time, temperature, humidity FROM house_climate_data WHERE location ='{room}' and date='{today}'"
+        query = f"SELECT date, time, temperature, humidity FROM home_thermostat.house_climate_data WHERE location ='{room}' and date='{today}'"
         cursor.execute(query)
         # Fetch the data
         data = cursor.fetchall()
