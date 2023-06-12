@@ -91,3 +91,7 @@ def create_graphs(dates="today", rooms="All"):
             resized_image = image.resize((320, 240), Image.ANTIALIAS)
             resized_image.save(f'./images/{room.replace(" ","_")}_{datetime}_240x320.png')
             os.remove(f'./images/{room.replace(" ","_")}_{datetime}.png')
+
+
+if __name__ == "__main__":
+    create_graphs()
