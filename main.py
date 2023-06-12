@@ -161,13 +161,14 @@ def main():
         second = str(date_time[1]).split(":")[2]
         # Refresh charts daily
         if date_time[0] != current_date:
-            current_date = get_current_date()
+            current_date = date_time[0]
             get_master_bedroom()
             get_living_room()
             get_second_bedroom()
         print(minute)
         # Refresh charts hourly
-        if minute == "59" and int(second) > 58:
+        if minute == "59":
+            print("Hourly Refresh")
             try:
                 get_master_bedroom()
                 get_living_room()
