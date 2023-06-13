@@ -5,6 +5,7 @@ from network import WLAN, STA_IF   # handles connecting to WiFi
 import urequests    # handles making and servicing network requests
 import machine
 import json
+import gc
 
 tft = tft_config.config(3)
 
@@ -122,6 +123,7 @@ utime.sleep(3)
 
 
 def main():
+    gc.enable()
     try:
         current_date = get_current_date()
         set_pico_time_from_server()
@@ -146,6 +148,7 @@ def main():
     y = (screen_height - image_height) // 2
 
     while True:
+        gc.collect()
         tft.png("MasterBedroom.png", x, y)
         utime.sleep(10)
         tft.fill(st7789.BLACK)
