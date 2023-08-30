@@ -10,11 +10,12 @@ from pathlib import Path
 # Establish a connection to the database
 with open("./etc/config.json", "r") as file:
     config_data = json.load(file)
+db_info = config_data["db"]
 conn = mysql.connector.connect(
-    host=config_data["host"],
-    user=config_data["user"],
-    password=config_data["password"],
-    database=config_data["database"]
+    host=db_info["host"],
+    user=db_info["user"],
+    password=db_info["password"],
+    database=db_info["database"]
 )
 
 # Create a cursor object
