@@ -4,14 +4,17 @@ import mysql.connector
 from datetime import timedelta
 import datetime as t
 from PIL import Image
+import json
 from pathlib import Path
 
 # Establish a connection to the database
+with open("./etc/config.json", "r") as file:
+    config_data = json.load(file)
 conn = mysql.connector.connect(
-    host="192.168.1.4",
-    user="Dr.Tautology",
-    password="SmidgeCat12516!",
-    database="home_thermostat"
+    host=config_data["host"],
+    user=config_data["user"],
+    password=config_data["password"],
+    database=config_data["database"]
 )
 
 # Create a cursor object

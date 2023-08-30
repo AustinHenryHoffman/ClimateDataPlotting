@@ -6,6 +6,7 @@ import datetime as t
 from PIL import Image
 import os
 import sys
+import json
 matplotlib.use('Agg')
 
 
@@ -33,11 +34,13 @@ def create_graphs(dates="today", rooms="All"):
     for room in rooms:
         print(room.replace(" ", "_"))
         # Establish a connection to the database
+        with open("./etc/config.json", "r") as file:
+            config_data = json.load(file)
         conn = mysql.connector.connect(
-            host="192.168.1.4",
-            user="Dr.Tautology",
-            password="SmidgeCat12516!",
-            database="home_thermostat"
+            host=config_data["host"],
+            user=config_data["user"],
+            password=config_data["password"],
+            database=config_data["database"]
         )
         cursor = conn.cursor()
         query = f"SELECT date, time, temperature, humidity FROM home_thermostat.house_climate_data WHERE location ='{room}' and date='{today}'"

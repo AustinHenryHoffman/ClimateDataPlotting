@@ -1,0 +1,7 @@
+{
+  "host": {
+  "user": "test",
+  "password": "test",
+    "database:": "test"
+    }
+}
