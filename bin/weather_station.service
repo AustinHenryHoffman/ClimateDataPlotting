@@ -1,0 +1,11 @@
+[Unit]
+Description=Weather Station API
+After=network.target auditd.service mysqld.service
+
+[Service]
+ExecStart=/home/Dr.Tautology/anaconda3/bin/python /home/Dr.Tautology/weather_station_api.py
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
